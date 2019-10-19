@@ -50,7 +50,7 @@ namespace Rainbowrun
             if (evento1b == 28) { ev.ChangeTo = ItemType.P90; }
             if (evento1b == 29) { ev.ChangeTo = ItemType.O5_LEVEL_KEYCARD; }
             if (evento1b == 30) { ev.Player.Kill(DamageType.POCKET); }
-
+             
         }
 
         public void OnPlayerHurt(PlayerHurtEvent ev)
