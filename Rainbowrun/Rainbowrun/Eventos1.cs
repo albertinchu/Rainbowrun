@@ -11,13 +11,53 @@ using scp4aiur;
 
 namespace Rainbowrun
 {
-    partial class Eventos1 : IEventHandlerPlayerHurt
+    partial class Eventos1 : IEventHandlerPlayerHurt, IEventHandlerPlayerDropItem
     {
+        public void OnPlayerDropItem(PlayerDropItemEvent ev)
+        {
+            System.Random objeto = new System.Random();
+            int evento1b = objeto.Next(0, 30);
+            if((evento1b == 0) || (evento1b == 1))
+            {
+                ev.Allow = false;
+            }
+            if (evento1b == 2){ ev.ChangeTo = ItemType.NULL; }
+            if (evento1b == 3) { ev.ChangeTo = ItemType.MTF_LIEUTENANT_KEYCARD; }
+            if (evento1b == 4) { ev.ChangeTo = ItemType.MTF_COMMANDER_KEYCARD; }
+            if (evento1b == 5) { ev.ChangeTo = ItemType.MP4; }
+            if (evento1b == 6) { ev.ChangeTo = ItemType.MICROHID; }
+            if (evento1b == 7) { ev.ChangeTo = ItemType.MEDKIT; }
+            if (evento1b == 8) { ev.ChangeTo = ItemType.MAJOR_SCIENTIST_KEYCARD; }
+            if (evento1b == 9) { ev.ChangeTo = ItemType.LOGICER; }
+            if (evento1b == 10) { ev.ChangeTo = ItemType.JANITOR_KEYCARD; }
+            if (evento1b == 11) { ev.ChangeTo = ItemType.GUARD_KEYCARD; }
+            if (evento1b == 12) { ev.ChangeTo = ItemType.FRAG_GRENADE; }
+            if (evento1b == 13) { ev.ChangeTo = ItemType.FLASHLIGHT; }
+            if (evento1b == 14) { ev.ChangeTo = ItemType.FLASHBANG; }
+            if (evento1b == 15) { ev.ChangeTo = ItemType.FACILITY_MANAGER_KEYCARD; }
+            if (evento1b == 16) { ev.ChangeTo = ItemType.E11_STANDARD_RIFLE; }
+            if (evento1b == 17) { ev.ChangeTo = ItemType.DISARMER; }
+            if (evento1b == 18) { ev.ChangeTo = ItemType.CONTAINMENT_ENGINEER_KEYCARD; }
+            if (evento1b == 19) { ev.ChangeTo = ItemType.COM15; }
+            if (evento1b == 20) { ev.ChangeTo = ItemType.CHAOS_INSURGENCY_DEVICE; }
+            if (evento1b == 21) { ev.ChangeTo = ItemType.COIN; }
+            if (evento1b == 22) { ev.ChangeTo = ItemType.ZONE_MANAGER_KEYCARD; }
+            if (evento1b == 23) { ev.ChangeTo = ItemType.WEAPON_MANAGER_TABLET; }
+            if (evento1b == 24) { ev.ChangeTo = ItemType.USP; }
+            if (evento1b == 25) { ev.ChangeTo = ItemType.SENIOR_GUARD_KEYCARD; }
+            if (evento1b == 26) { ev.ChangeTo = ItemType.SCIENTIST_KEYCARD; }
+            if (evento1b == 27) { ev.ChangeTo = ItemType.RADIO; }
+            if (evento1b == 28) { ev.ChangeTo = ItemType.P90; }
+            if (evento1b == 29) { ev.ChangeTo = ItemType.O5_LEVEL_KEYCARD; }
+            if (evento1b == 30) { ev.Player.Kill(DamageType.POCKET); }
+
+        }
+
         public void OnPlayerHurt(PlayerHurtEvent ev)
         {
             System.Random daño = new System.Random();
             int evento1 = daño.Next(0, 50);
-
+            if (ev.Attacker.GetGodmode()) { ev.Attacker.SetGodmode(false); }
             if ((evento1 == 0) || (evento1 == 1))
             {
                 ev.Damage = 0;
