@@ -20,4 +20,18 @@ namespace Rainbowrun
 
 
     }
+    partial class Eventos1
+    {
+
+        private RainBowrun plugin;
+
+
+        public Eventos1(RainBowrun plugin)
+        {
+            this.plugin = plugin;
+
+        }
+
+
+    }
 }

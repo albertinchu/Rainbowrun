@@ -32,7 +32,7 @@ namespace Rainbowrun
         {
             this.AddEventHandlers(new Events(this));
             Timing.Init(this);
-           
+            this.AddEventHandlers(new Eventos1(this));
 
             GamemodeManager.Manager.RegisterMode(this);
 

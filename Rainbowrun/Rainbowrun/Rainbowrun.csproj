@@ -53,6 +53,7 @@
     </Reference>
   </ItemGroup>
   <ItemGroup>
+    <Compile Include="Eventos1.cs" />
     <Compile Include="Events.cs" />
     <Compile Include="Rainbowrun.cs" />
     <Compile Include="Properties\AssemblyInfo.cs" />

@@ -23,7 +23,7 @@ namespace Rainbowrun
             public void OnDoorAccess(PlayerDoorAccessEvent ev)
         {
             System.Random puertas = new System.Random();
-            int evento = puertas.Next(0, 150);
+            int evento = puertas.Next(0, 100);
 
             if((evento == 1)||(evento == 0))
             {
