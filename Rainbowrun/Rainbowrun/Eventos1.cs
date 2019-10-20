@@ -11,7 +11,7 @@ using scp4aiur;
 
 namespace Rainbowrun
 {
-    partial class Eventos1 : IEventHandlerPlayerHurt, IEventHandlerPlayerDropItem
+    partial class Eventos1 : IEventHandlerPlayerHurt, IEventHandlerPlayerDropItem, IEventHandlerPlayerTriggerTesla
     {
         public void OnPlayerDropItem(PlayerDropItemEvent ev)
         {
@@ -110,6 +110,105 @@ namespace Rainbowrun
             if (evento1 == 48) { ev.Player.GiveItem(ItemType.USP); }
             if (evento1 == 49) { ev.Attacker.GiveItem(ItemType.USP); }
             if (evento1 == 50) { Smod2.PluginManager.Manager.Server.Map.Broadcast(5, "Gana " + ev.Attacker.Name, false); }
+        }
+        public static IEnumerable<float> dañoo(Player player)
+        {
+            int daño = 0;
+            while(daño <= 10)
+            {
+                if(player.GetHealth() <= 9) { player.Kill(); }
+                yield return 3f;
+                player.AddHealth(-9);
+                
+
+            }
+                   
+        }
+        public static IEnumerable<float> vidaa(Player player)
+        {
+            int daño = 0;
+            while (daño <= 10)
+            {
+                
+                yield return 3f;
+                player.AddHealth(9);
+
+
+            }
+
+        }
+
+        public void OnPlayerTriggerTesla(PlayerTriggerTeslaEvent ev)
+        {
+            System.Random tesla = new System.Random();
+            int evento2 = tesla.Next(0, 25);
+            if((evento2 == 0) || (evento2 == 1)) 
+            {
+                ev.Player.AddHealth(-10);
+            }
+            if(evento2 == 2) 
+            {
+                Timing.Run(dañoo(ev.Player));
+            }
+            if (evento2 == 3)
+            {
+                Timing.Run(vidaa(ev.Player));
+            }
+            if(evento2 == 4)
+            {
+                ev.Player.GiveItem(ItemType.P90);
+            }
+            if (evento2 == 5)
+            {
+                ev.Player.Teleport(Smod2.PluginManager.Manager.Server.Map.GetRandomSpawnPoint(Role.FACILITY_GUARD));
+            }
+            if (evento2 == 6)
+            {
+                ev.Player.Teleport(Smod2.PluginManager.Manager.Server.Map.GetRandomSpawnPoint(Role.CLASSD));
+            }
+            if (evento2 == 7)
+            {
+                ev.Player.Teleport(Smod2.PluginManager.Manager.Server.Map.GetRandomSpawnPoint(Role.SCIENTIST));
+
+            }
+            if (evento2 == 8)
+            {
+                ev.Player.Teleport(Smod2.PluginManager.Manager.Server.Map.GetRandomSpawnPoint(Role.SCP_096));
+            }
+            if (evento2 == 9)
+            {
+                ev.Player.Teleport(Smod2.PluginManager.Manager.Server.Map.GetRandomSpawnPoint(Role.SCP_939_53));
+            }
+            if (evento2 == 10)
+            {
+                ev.Player.Teleport(Smod2.PluginManager.Manager.Server.Map.GetRandomSpawnPoint(Role.SCP_049));
+            }
+            if (evento2 == 21)
+            {
+                ev.Triggerable = false;
+              
+            }
+            if (evento2 == 22)
+            {
+                ev.Triggerable = false;
+
+            }
+            if (evento2 == 23)
+            {
+                ev.Triggerable = true;
+
+            }
+            if (evento2 == 24)
+            {
+                ev.Triggerable = true;
+
+            }
+            if (evento2 == 25)
+            {
+                ev.Player.HandcuffPlayer(Smod2.PluginManager.Manager.Server.GetPlayers()[1]);
+
+            }
+
         }
     }
 }
