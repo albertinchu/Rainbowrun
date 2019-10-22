@@ -9,7 +9,7 @@ using Smod2.API;
 using scp4aiur;
 namespace Rainbowrun
 {
-    partial class Events : IEventHandlerDoorAccess, IEventHandlerPlayerHurt, IEventHandlerWaitingForPlayers
+    partial class Events : IEventHandlerDoorAccess, IEventHandlerPlayerHurt, IEventHandlerWaitingForPlayers, IEventHandlerPlayerDie
     {
         static Dictionary<string, int> Vidaextra = new Dictionary<string, int>();
         static Dictionary<string, String> Love = new Dictionary<string,String>();
@@ -608,12 +608,105 @@ namespace Rainbowrun
 
         }
 
+        public void OnPlayerDie(PlayerDeathEvent ev)
+        {
+            System.Random muertos = new System.Random();
+            int eventod = muertos.Next(0, 20);
+
+            if ((eventod == 1) || (eventod == 0))
+            {
+                ev.SpawnRagdoll = false;
+                ev.Player.PersonalBroadcast(5, "No te preocupes, nadie sabrá que has muerto puesto que escondí tu cuerpo", false);
+            }
+            if ((eventod == 2))
+            {
+                ev.Killer.SetAmmo(AmmoType.DROPPED_9, ev.Killer.GetAmmo(AmmoType.DROPPED_9) + 100);
+                ev.Killer.PersonalBroadcast(5, "Ammo Up", false);
+            }
+            if ((eventod == 3))
+            {
+                ev.Killer.SetAmmo(AmmoType.DROPPED_7, ev.Killer.GetAmmo(AmmoType.DROPPED_7) + 100);
+                ev.Killer.PersonalBroadcast(5, "Ammo Up", false);
+            }
+            if ((eventod == 4))
+            {
+                ev.Killer.SetAmmo(AmmoType.DROPPED_5, ev.Killer.GetAmmo(AmmoType.DROPPED_5) + 100);
+                ev.Killer.PersonalBroadcast(5, "Ammo Up", false);
+            }
+            if ((eventod == 5))
+            {
+                ev.Killer.SetAmmo(AmmoType.DROPPED_5, ev.Killer.GetAmmo(AmmoType.DROPPED_5) - 100);
+                ev.Killer.PersonalBroadcast(5, "Ammo down", false);
+            }
+            if ((eventod == 6))
+            {
+                ev.Killer.SetAmmo(AmmoType.DROPPED_7, ev.Killer.GetAmmo(AmmoType.DROPPED_7) - 100);
+                ev.Killer.PersonalBroadcast(5, "Ammo down", false);
+            }
+            if ((eventod == 7))
+            {
+                ev.Killer.SetAmmo(AmmoType.DROPPED_9, ev.Killer.GetAmmo(AmmoType.DROPPED_9) - 100);
+                ev.Killer.PersonalBroadcast(5, "Ammo down", false);
+            }
+            if ((eventod == 8))
+            {
+  
+                ev.Killer.SetAmmo(AmmoType.DROPPED_5, ev.Killer.GetAmmo(AmmoType.DROPPED_5) +20);
+                ev.Killer.SetAmmo(AmmoType.DROPPED_7, ev.Killer.GetAmmo(AmmoType.DROPPED_7) + 20);
+                ev.Killer.SetAmmo(AmmoType.DROPPED_9, ev.Killer.GetAmmo(AmmoType.DROPPED_9) + 20);
+                ev.Killer.AddHealth(20);
+                ev.Killer.PersonalBroadcast(5, "Has alcanzado el nivel 2, sonidito de pokemon subiendo de nivel...", false);
+            }
+            if ((eventod == 11))
+            {
+
+                ev.Killer.Kill();
+                ev.Killer.PersonalBroadcast(5, "Mala idea...", false);
+            }
+            if ((eventod == 13))
+            {
+
+                ev.Killer.AddHealth(-50);
+                ev.Killer.PersonalBroadcast(5, "Eso esta feo...", false);
+            }
+            if ((eventod == 15))
+            {
+
+                ev.Killer.AddHealth(+50);
+                ev.Killer.PersonalBroadcast(5, "=)", false);
+            }
+            if ((eventod == 17))
+            {
+
+                ev.Killer.AddHealth(+250);
+                ev.Killer.PersonalBroadcast(5, "=D", false);
+            }
+            if ((eventod == 19))
+            {
+                if (Vidaextra.ContainsKey(ev.Killer.SteamId)) { Vidaextra[ev.Killer.SteamId] += 1; }
+                if (!Vidaextra.ContainsKey(ev.Killer.SteamId)) { Vidaextra.Add(ev.Killer.SteamId, 1); }
+                
+                ev.Killer.PersonalBroadcast(5, "Robaste un vida, y ahora te pertenece...", false);
+            }
+
+        }
+
         public void OnPlayerHurt(PlayerHurtEvent ev)
         {
             if((Love.ContainsKey(ev.Player.SteamId))&&(Love[ev.Player.SteamId] == ev.Attacker.SteamId))
             {
                 ev.Damage = 0;
             }
+
+            if (Vidaextra.ContainsKey(ev.Player.SteamId))
+            {
+                if ((Vidaextra[ev.Player.SteamId] > 0)&&(ev.Player.GetHealth() <= ev.Damage))
+                {
+                    Vidaextra[ev.Player.SteamId] -= 1;
+                }
+               
+            }
+            
         }
 
         public void OnWaitingForPlayers(WaitingForPlayersEvent ev)
