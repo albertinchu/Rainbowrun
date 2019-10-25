@@ -9,10 +9,11 @@ using Smod2.API;
 using scp4aiur;
 namespace Rainbowrun
 {
-    partial class Events : IEventHandlerDoorAccess, IEventHandlerPlayerHurt, IEventHandlerWaitingForPlayers, IEventHandlerPlayerDie
+    partial class Events : IEventHandlerDoorAccess, IEventHandlerPlayerHurt, IEventHandlerWaitingForPlayers, IEventHandlerPlayerDie, IEventHandlerSetRole
     {
         static Dictionary<string, int> Vidaextra = new Dictionary<string, int>();
         static Dictionary<string, String> Love = new Dictionary<string,String>();
+        
 
         public static IEnumerable<float> spectator(Player player)
         {
@@ -20,21 +21,30 @@ namespace Rainbowrun
             yield return 60f;
             player.ChangeRole(Role.SPECTATOR);
         }
-            public void OnDoorAccess(PlayerDoorAccessEvent ev)
+        static Dictionary<string, bool> Cooldown = new Dictionary<string, bool>();
+        public static IEnumerable<float> Cooldownw(Player player)
+        {
+
+            yield return 5f;
+            Cooldown[player.SteamId] = true;
+        }
+        public void OnDoorAccess(PlayerDoorAccessEvent ev)
         {
             System.Random puertas = new System.Random();
             int evento = puertas.Next(0, 100);
-
-            if((evento == 1)||(evento == 0))
+            if(Cooldown[ev.Player.SteamId])
+            {
+                Cooldown[ev.Player.SteamId] = false;
+            if ((evento == 1) || (evento == 0))
             {
                 ev.Destroy = true;
                 ev.Player.PersonalBroadcast(5, "estoy mamadisimo", true);
             }
-            if(evento == 2)
+            if (evento == 2)
             {
                 ev.Player.PersonalBroadcast(5, "<color=#AC0BD4> No ocurre nada jaja salu2 </color>", false);
             }
-            if(evento == 3)
+            if (evento == 3)
             {
                 ev.Allow = false;
                 ev.Player.PersonalBroadcast(3, "<color=#C50000> No puedes abrirme jajajajaj </color>", false);
@@ -43,10 +53,10 @@ namespace Rainbowrun
             if (evento == 4)
             {
                 ev.Player.AddHealth(-10);
-                if(ev.Player.TeamRole.Team == Smod2.API.Team.SCP) { ev.Player.AddHealth(-200); }
+                if (ev.Player.TeamRole.Team == Smod2.API.Team.SCP) { ev.Player.AddHealth(-200); }
                 ev.Player.PersonalBroadcast(3, "<color=#C50000> Toma, por abrirme tonto </color>", false);
             }
-            if(evento == 5)
+            if (evento == 5)
             {
                 ev.Player.ChangeRole(Smod2.API.Role.FACILITY_GUARD);
                 ev.Player.PersonalBroadcast(5, "<color=#17CE28> Estas de coña, no? GUARDIA EN SERIO?!!! </color>", false);
@@ -59,7 +69,7 @@ namespace Rainbowrun
             }
             if (evento == 7)
             {
-                
+
                 ev.Player.PersonalBroadcast(5, "<color=#17CE28>V</color><color=#C50000>I</color><color=#FF5000>D</color><color=#D68312>A </color><color=#0013FF>E</color><color=#00FFC9>X</color><color=#17CE28>T</color><color=#81A700>R</color><color=#763B00>A</color>         ", false);
                 if (!Vidaextra.ContainsKey(ev.Player.SteamId)) { Vidaextra.Add(ev.Player.SteamId, 1); }
                 if (Vidaextra.ContainsKey(ev.Player.SteamId)) { Vidaextra[ev.Player.SteamId] += 1; }
@@ -111,7 +121,7 @@ namespace Rainbowrun
                 ev.Player.Teleport(Smod2.PluginManager.Manager.Server.Map.GetRandomSpawnPoint(Role.SCP_049));
                 ev.Player.PersonalBroadcast(2, "<color=#FF0500> eeeemmmm, ¿HOla? </color>", false);
             }
-            if(evento == 17)
+            if (evento == 17)
             {
                 ev.Player.AddHealth(-50);
                 ev.Player.PersonalBroadcast(2, "<color=#C50000> ¡No toques!, mi espacio vital tio </color>", false);
@@ -136,7 +146,7 @@ namespace Rainbowrun
                 Smod2.PluginManager.Manager.Server.Map.StopWarhead();
                 ev.Player.PersonalBroadcast(2, "<color=#EE00A6> well, nuke off </color>", false);
             }
-            if(evento == 22)
+            if (evento == 22)
             {
                 ev.Player.ChangeRole(Role.SCP_079);
                 ev.Player.PersonalBroadcast(2, "<color=#0026E6> SYSTEM ERROR BIT BIT </color>", false);
@@ -157,12 +167,12 @@ namespace Rainbowrun
                     else { ev.Player.Kill(DamageType.FLYING); }
                 }
                 else { ev.Player.Kill(DamageType.FALLDOWN); }
-                
+
                 ev.Player.PersonalBroadcast(2, "<color=#C50000> ufff </color>", false);
             }
-            if(evento == 25)
+            if (evento == 25)
             {
-                ev.Player.ThrowGrenade(GrenadeType.FLASHBANG, true, new Vector(0, 0, 0), true,ev.Player.GetPosition(),true,0,true);
+                ev.Player.ThrowGrenade(GrenadeType.FLASHBANG, true, new Vector(0, 0, 0), true, ev.Player.GetPosition(), true, 0, true);
                 ev.Player.PersonalBroadcast(2, "<color=#C50000> no puedes ver </color>", false);
             }
             if (evento == 25)
@@ -240,25 +250,25 @@ namespace Rainbowrun
             }
             if (evento == 38)
             {
-                
+
                 ev.Player.PersonalBroadcast(2, "<color=#C50000> Te salvas por esta vez </color>", false);
             }
             if (evento == 39)
             {
-                
+
                 ev.Player.PersonalBroadcast(3, "<color=#C50000> eemmm esto sa roto, por que no hase naa </color>", false);
             }
             if (evento == 40)
             {
-               
+
                 ev.Player.PersonalBroadcast(2, "<color=#C50000> lo importante es participar </color>", false);
             }
             if (evento == 41)
             {
                 ev.Player.ThrowGrenade(GrenadeType.FRAG_GRENADE, true, ev.Player.GetPosition(), true, new Vector(0, 2, 0), true, 0, true);
-               
+
                 ev.Player.ThrowGrenade(GrenadeType.FRAG_GRENADE, true, ev.Player.GetPosition(), true, ev.Player.GetPosition(), true, 0, false);
-                
+
                 ev.Player.ThrowGrenade(GrenadeType.FRAG_GRENADE, true, ev.Player.GetPosition(), true, new Vector(0, 0, 0), true, 0, true);
                 ev.Player.ThrowGrenade(GrenadeType.FRAG_GRENADE, true, new Vector(0, 3, 0), true, ev.Player.GetPosition(), true, 0, true);
                 ev.Player.ThrowGrenade(GrenadeType.FRAG_GRENADE, true, ev.Player.GetPosition(), true, ev.Player.GetPosition(), true, 0, true);
@@ -266,13 +276,13 @@ namespace Rainbowrun
                 ev.Player.ThrowGrenade(GrenadeType.FRAG_GRENADE, true, ev.Player.GetPosition(), true, new Vector(0, 0, 0), true, 0, true);
                 ev.Player.ThrowGrenade(GrenadeType.FRAG_GRENADE, true, new Vector(0, 2, 0), true, ev.Player.GetPosition(), true, 0, true);
                 ev.Player.ThrowGrenade(GrenadeType.FRAG_GRENADE, true, ev.Player.GetPosition(), true, ev.Player.GetPosition(), true, 0, true);
-                ev.Player.ThrowGrenade(GrenadeType.FRAG_GRENADE, true, new Vector(0,0,0), true, ev.Player.GetPosition(), true, 0, true);
+                ev.Player.ThrowGrenade(GrenadeType.FRAG_GRENADE, true, new Vector(0, 0, 0), true, ev.Player.GetPosition(), true, 0, true);
                 ev.Player.ThrowGrenade(GrenadeType.FRAG_GRENADE, true, ev.Player.GetPosition(), true, new Vector(0, 4, 0), true, 0, false);
                 ev.Player.PersonalBroadcast(2, "<color=#C50000> Corre por tu vida YA </color>", false);
             }
             if (evento == 42)
             {
-                ev.Player.ChangeRole(Role.SCIENTIST,false);
+                ev.Player.ChangeRole(Role.SCIENTIST, false);
                 ev.Player.PersonalBroadcast(2, " 100tífico ", false);
             }
             if (evento == 43)
@@ -341,7 +351,7 @@ namespace Rainbowrun
             }
             if (evento == 53)
             {
-                foreach (Player player in Smod2.PluginManager.Manager.Server.GetPlayers()) { player.GiveItem(ItemType.FRAG_GRENADE ); }
+                foreach (Player player in Smod2.PluginManager.Manager.Server.GetPlayers()) { player.GiveItem(ItemType.FRAG_GRENADE); }
                 ev.Player.PersonalBroadcast(2, "<color=#FF05FF> +1 frag a todos </color>", false);
             }
             if (evento == 57)
@@ -366,7 +376,7 @@ namespace Rainbowrun
             }
             if (evento == 58)
             {
-                
+
                 ev.Player.PersonalBroadcast(2, " Nada jajaj ", false);
             }
             if (evento == 59)
@@ -376,14 +386,14 @@ namespace Rainbowrun
             }
             if (evento == 60)
             {
-               
+
                 Timing.Run(spectator(ev.Player));
                 ev.Player.PersonalBroadcast(4, " en 60 segundos moriras sin importar nada, vidas extras, NADA ", false);
             }
             if (evento == 61)
             {
                 foreach (Player player in Smod2.PluginManager.Manager.Server.GetPlayers()) { if (player.Name != ev.Player.Name) { Timing.Run(spectator(player)); } }
-            
+
                 ev.Player.PersonalBroadcast(4, " en 60 segundos todos moriran menos tu ", false);
             }
             if (evento == 62) { ev.Player.GiveItem(ItemType.MEDKIT); ev.Player.PersonalBroadcast(4, " Botiquín gratis ", false); }
@@ -566,7 +576,7 @@ namespace Rainbowrun
             if (evento == 94)
             {
                 ev.Destroy = true;
-                
+
                 ev.Player.PersonalBroadcast(4, "<color=#FF05FF> QUE HAS HECHO?!! </color>", false);
             }
             if (evento == 95)
@@ -592,20 +602,22 @@ namespace Rainbowrun
             }
             if (evento == 99)
             {
-                
+
                 ev.Player.PersonalBroadcast(4, "<color=#FF05FF> GANASTE JAJA </color>", false);
-                if (Love.ContainsKey(ev.Player.SteamId)) { Smod2.PluginManager.Manager.Server.Map.Broadcast(10, ev.Player.Name + " ES EL GANADOR JAJAAAA y su enamorado" + Love[ev.Player.SteamId] + "tambien", false); } else
+                if (Love.ContainsKey(ev.Player.SteamId)) { Smod2.PluginManager.Manager.Server.Map.Broadcast(10, ev.Player.Name + " ES EL GANADOR JAJAAAA y su enamorado" + Love[ev.Player.SteamId] + "tambien", false); }
+                else
                 {
                     Smod2.PluginManager.Manager.Server.Map.Broadcast(10, ev.Player.Name + " ES EL GANADO JAJAAAA", false);
                 }
-                
+
             }
             if (evento == 100)
             {
-               
+
                 ev.Player.PersonalBroadcast(4, "<color=#FF05FF> F, no pasó nada </color>", false);
             }
-
+                Timing.Run(Cooldownw(ev.Player));
+        }
         }
 
         public void OnPlayerDie(PlayerDeathEvent ev)
@@ -707,6 +719,11 @@ namespace Rainbowrun
                
             }
             
+        }
+
+        public void OnSetRole(PlayerSetRoleEvent ev)
+        {
+            if (!Cooldown.ContainsKey(ev.Player.SteamId)) { Cooldown.Add(ev.Player.SteamId, true); }
         }
 
         public void OnWaitingForPlayers(WaitingForPlayersEvent ev)
