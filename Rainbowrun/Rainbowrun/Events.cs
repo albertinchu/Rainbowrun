@@ -9,7 +9,7 @@ using Smod2.API;
 using scp4aiur;
 namespace Rainbowrun
 {
-    partial class Events : IEventHandlerDoorAccess, IEventHandlerPlayerHurt, IEventHandlerWaitingForPlayers, IEventHandlerPlayerDie, IEventHandlerSetRole
+    partial class Events : IEventHandlerDoorAccess, IEventHandlerPlayerHurt, IEventHandlerWaitingForPlayers, IEventHandlerPlayerDie, IEventHandlerSetRole, IEventHandler079Elevator
     {
         static Dictionary<string, int> Vidaextra = new Dictionary<string, int>();
         static Dictionary<string, String> Love = new Dictionary<string,String>();
@@ -730,6 +730,43 @@ namespace Rainbowrun
         {
             Love.Clear();
             Vidaextra.Clear();
+        }
+
+        public void On079Elevator(Player079ElevatorEvent ev)
+        {
+            System.Random muertos = new System.Random();
+            int eventod = muertos.Next(0, 15);
+            if((eventod == 0)||(eventod == 1)) 
+            {
+                ev.Player.ChangeRole(Role.CHAOS_INSURGENCY);
+            }
+            if ((eventod == 2) || (eventod == 3))
+            {
+                ev.Player.ChangeRole(Role.CLASSD);
+            }
+            if ((eventod == 4) || (eventod == 5))
+            {
+                ev.Player.ChangeRole(Role.NTF_COMMANDER);
+            }
+            if ((eventod == 6) || (eventod == 7))
+            {
+                foreach (Player player in Smod2.PluginManager.Manager.Server.GetPlayers())
+                { player.ThrowGrenade(GrenadeType.FLASHBANG, true, new Vector(0, 0, 0), true, player.GetPosition(), false,0);
+                    player.ThrowGrenade(GrenadeType.FRAG_GRENADE, true, new Vector(0, 0, 0), true, player.GetPosition(), false, 0);
+                }
+            }
+            if ((eventod == 8) || (eventod == 9))
+            {
+                ev.Player.ChangeRole(Role.FACILITY_GUARD);
+            }
+            if ((eventod == 14))
+            {
+                ev.Player.Kill();
+            }
+            if ((eventod == 15))
+            {
+                ev.Player.Scp079Data.MaxAP = 99999;
+            }
         }
     }
 }
