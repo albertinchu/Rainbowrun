@@ -31,7 +31,7 @@ namespace Rainbowrun
             if (evento1b == 2){ ev.ChangeTo = ItemType.NULL; }
             if (evento1b == 3) { ev.ChangeTo = ItemType.MTF_LIEUTENANT_KEYCARD; }
             if (evento1b == 4) { ev.ChangeTo = ItemType.MTF_COMMANDER_KEYCARD; }
-            if (evento1b == 5) { ev.ChangeTo = ItemType.MP4; }
+            if (evento1b == 5) { ev.ChangeTo = ItemType.MP7; }
             if (evento1b == 6) { ev.ChangeTo = ItemType.MICROHID; }
             if (evento1b == 7) { ev.ChangeTo = ItemType.MEDKIT; }
             if (evento1b == 8) { ev.ChangeTo = ItemType.MAJOR_SCIENTIST_KEYCARD; }
