@@ -31,6 +31,12 @@
     <WarningLevel>4</WarningLevel>
   </PropertyGroup>
   <ItemGroup>
+    <Reference Include="Assembly-CSharp">
+      <HintPath>..\..\..\..\..\Downloads\plugins y codigo\referencias\Assembly-CSharp.dll</HintPath>
+    </Reference>
+    <Reference Include="Assembly-CSharp-firstpass">
+      <HintPath>..\..\..\..\..\Downloads\plugins y codigo\referencias\Assembly-CSharp-firstpass.dll</HintPath>
+    </Reference>
     <Reference Include="GamemodeManager">
       <HintPath>..\..\..\..\..\Downloads\plugins y codigo\referencias\GamemodeManager.dll</HintPath>
     </Reference>
@@ -52,6 +58,13 @@
     <Reference Include="UnityEngine.CoreModule">
       <HintPath>..\..\..\..\..\Downloads\plugins y codigo\referencias\UnityEngine.CoreModule.dll</HintPath>
     </Reference>
+    <Reference Include="UnityEngine.Networking">
+      <HintPath>..\..\..\..\..\Downloads\plugins y codigo\referencias\UnityEngine.Networking.dll</HintPath>
+    </Reference>
+    <Reference Include="UnityEngine.PhysicsModule, Version=0.0.0.0, Culture=neutral, processorArchitecture=MSIL">
+      <SpecificVersion>False</SpecificVersion>
+      <HintPath>..\..\..\..\..\Downloads\plugins y codigo\referencias\UnityEngine.PhysicsModule.dll</HintPath>
+    </Reference>
   </ItemGroup>
   <ItemGroup>
     <Compile Include="Eventos1.cs" />
@@ -59,7 +72,6 @@
     <Compile Include="Rainbowrun.cs" />
     <Compile Include="Properties\AssemblyInfo.cs" />
     <Compile Include="Register.cs" />
-    <Compile Include="Timing.cs" />
   </ItemGroup>
   <Import Project="$(MSBuildToolsPath)\Microsoft.CSharp.targets" />
 </Project>

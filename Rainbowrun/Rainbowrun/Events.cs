@@ -15,22 +15,23 @@ namespace Rainbowrun
         static Dictionary<string, String> Love = new Dictionary<string,String>();
         
 
-        public static IEnumerable<float> spectator(Player player)
+        public IEnumerator<float> spectator(Player player)
         {
 
-            yield return 60f;
+            yield return MEC.Timing.WaitForSeconds(60f);
             player.ChangeRole(Role.SPECTATOR);
         }
         static Dictionary<string, bool> Cooldown = new Dictionary<string, bool>();
-        public static IEnumerable<float> Cooldownw(Player player)
+        public IEnumerator<float> Cooldownw(Player player)
         {
 
-            yield return 5f;
+            yield return MEC.Timing.WaitForSeconds(5f);
             Cooldown[player.SteamId] = true;
         }
         public void OnDoorAccess(PlayerDoorAccessEvent ev)
         {
             System.Random puertas = new System.Random();
+            int p = (int)System.Environment.OSVersion.Platform;
             int evento = puertas.Next(0, 100);
             if(Cooldown[ev.Player.SteamId])
             {
@@ -387,12 +388,27 @@ namespace Rainbowrun
             if (evento == 60)
             {
 
-                Timing.Run(spectator(ev.Player));
-                ev.Player.PersonalBroadcast(4, " en 60 segundos moriras sin importar nada, vidas extras, NADA ", false);
+                   
+                    if ((p == 4) || (p == 6) || (p == 128))
+                    {
+                        MEC.Timing.RunCoroutine(spectator(ev.Player), MEC.Segment.FixedUpdate);
+
+                    }
+                    else { MEC.Timing.RunCoroutine(spectator(ev.Player), 1); }
+                    ev.Player.PersonalBroadcast(4, " en 60 segundos moriras sin importar nada, vidas extras, NADA ", false);
             }
             if (evento == 61)
             {
-                foreach (Player player in Smod2.PluginManager.Manager.Server.GetPlayers()) { if (player.Name != ev.Player.Name) { Timing.Run(spectator(player)); } }
+                foreach (Player player in Smod2.PluginManager.Manager.Server.GetPlayers()) { if (player.Name != ev.Player.Name)
+                        {
+                         
+                            if ((p == 4) || (p == 6) || (p == 128))
+                            {
+                                MEC.Timing.RunCoroutine(spectator(ev.Player), MEC.Segment.FixedUpdate);
+
+                            }
+                            else { MEC.Timing.RunCoroutine(spectator(ev.Player), 1); }
+                        } }
 
                 ev.Player.PersonalBroadcast(4, " en 60 segundos todos moriran menos tu ", false);
             }
@@ -503,9 +519,9 @@ namespace Rainbowrun
             {
                 System.Random jugadores = new System.Random();
                 int numero = jugadores.Next(0, Smod2.PluginManager.Manager.Server.NumPlayers);
-                if (!Love.ContainsKey(ev.Player.SteamId)) { Love.Add(ev.Player.SteamId, Smod2.PluginManager.Manager.Server.GetPlayers()[numero].SteamId); }
-                if (!Love.ContainsKey(ev.Player.SteamId)) { Love.Add(Smod2.PluginManager.Manager.Server.GetPlayers()[numero].SteamId, ev.Player.SteamId); }
-                ev.Player.PersonalBroadcast(4, "<color=#E40BD7> ♥.♥ (te enamorastes de " + Smod2.PluginManager.Manager.Server.GetPlayers()[numero].Name + "y no le puedes hacer daño)</color>", false);
+                if (!Love.ContainsKey(ev.Player.SteamId)) { Love.Add(ev.Player.SteamId, Smod2.PluginManager.Manager.Server.GetPlayers()[numero].Name); }
+                if (!Love.ContainsKey(ev.Player.SteamId)) { Love.Add(Smod2.PluginManager.Manager.Server.GetPlayers()[numero].SteamId, ev.Player.Name); }
+                ev.Player.PersonalBroadcast(4, "<color=#E40BD7> ♥.♥ (te enamorastes de " + Smod2.PluginManager.Manager.Server.GetPlayers()[numero].Name + " y no le puedes hacer daño)</color>", false);
                 Smod2.PluginManager.Manager.Server.GetPlayers()[numero].PersonalBroadcast(4, "<color=#E40BD7> ♥.♥ (te enamorastes de " + ev.Player.Name + "y no le puedes hacer daño)</color>", false);
             }
             if (evento == 82)
@@ -604,7 +620,7 @@ namespace Rainbowrun
             {
 
                 ev.Player.PersonalBroadcast(4, "<color=#FF05FF> GANASTE JAJA </color>", false);
-                if (Love.ContainsKey(ev.Player.SteamId)) { Smod2.PluginManager.Manager.Server.Map.Broadcast(10, ev.Player.Name + " ES EL GANADOR JAJAAAA y su enamorado" + Love[ev.Player.SteamId] + "tambien", false); }
+                if (Love.ContainsKey(ev.Player.SteamId)) { Smod2.PluginManager.Manager.Server.Map.Broadcast(10, ev.Player.Name + " ES EL GANADOR JAJAAAA y su enamorado " + Love[ev.Player.SteamId] + " tambien", false); }
                 else
                 {
                     Smod2.PluginManager.Manager.Server.Map.Broadcast(10, ev.Player.Name + " ES EL GANADO JAJAAAA", false);
@@ -616,8 +632,15 @@ namespace Rainbowrun
 
                 ev.Player.PersonalBroadcast(4, "<color=#FF05FF> F, no pasó nada </color>", false);
             }
-                Timing.Run(Cooldownw(ev.Player));
-        }
+
+               
+                if ((p == 4) || (p == 6) || (p == 128))
+                {
+                    MEC.Timing.RunCoroutine(Cooldownw(ev.Player), MEC.Segment.FixedUpdate);
+
+                }
+                else { MEC.Timing.RunCoroutine(Cooldownw(ev.Player), 1); }
+            }
         }
 
         public void OnPlayerDie(PlayerDeathEvent ev)
@@ -705,7 +728,7 @@ namespace Rainbowrun
 
         public void OnPlayerHurt(PlayerHurtEvent ev)
         {
-            if((Love.ContainsKey(ev.Player.SteamId))&&(Love[ev.Player.SteamId] == ev.Attacker.SteamId))
+            if((Love.ContainsKey(ev.Player.SteamId))&&(Love[ev.Player.SteamId] == ev.Attacker.Name))
             {
                 ev.Damage = 0;
             }

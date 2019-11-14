@@ -7,17 +7,17 @@ using Smod2.EventHandlers;
 using Smod2.Events;
 using Smod2.API;
 using scp4aiur;
-
+using MEC;
 
 namespace Rainbowrun
 {
     partial class Eventos1 : IEventHandlerPlayerHurt, IEventHandlerPlayerDropItem, IEventHandlerPlayerTriggerTesla, IEventHandlerSetRole, IEventHandlerPlayerDropAllItems
     {
         static Dictionary<string, bool> Cooldown2 = new Dictionary<string, bool>();
-        public static IEnumerable<float> Cooldownw2(Player player)
+        public IEnumerator<float> Cooldownw2(Player player)
         {
 
-            yield return 1.5f;
+            yield return MEC.Timing.WaitForSeconds(1.5f);
             Cooldown2[player.SteamId] = true;
         }
         public void OnPlayerDropItem(PlayerDropItemEvent ev)
@@ -119,23 +119,33 @@ namespace Rainbowrun
             if (evento1 == 48) { ev.Player.GiveItem(ItemType.USP); }
             if (evento1 == 49) { ev.Attacker.GiveItem(ItemType.USP); }
             if (evento1 == 50) { Smod2.PluginManager.Manager.Server.Map.Broadcast(5, "Gana " + ev.Attacker.Name, false); }
-                Timing.Run(Cooldownw2(ev.Player));
+                int p = (int)System.Environment.OSVersion.Platform;
+                if ((p == 4) || (p == 6) || (p == 128))
+                {
+                    MEC.Timing.RunCoroutine(Cooldownw2(ev.Player), MEC.Segment.FixedUpdate);
+
+                }
+                else { MEC.Timing.RunCoroutine(Cooldownw2(ev.Player), 1); }
+
+            }
+            
+        
         }
-        }
-        public static IEnumerable<float> dañoo(Player player)
+        public IEnumerator<float> dañoo(Player player)
         {
             int daño = 0;
             while(daño <= 10)
             {
                 if(player.GetHealth() <= 9) { player.Kill(); }
-                yield return 3f;
+                yield return MEC.Timing.WaitForSeconds(3f);
                 player.AddHealth(-9);
-                
+            daño += 1;
 
             }
+            
                    
         }
-        public static IEnumerable<float> vidaa(Player player)
+        public IEnumerator<float> Vidaa(Player player)
         {
             int daño = 0;
             while (daño <= 10)
@@ -143,10 +153,11 @@ namespace Rainbowrun
                 
                 yield return 3f;
                 player.AddHealth(9);
-
-
+            daño += 1;
+            
+          
             }
-
+      
         }
 
         public void OnPlayerTriggerTesla(PlayerTriggerTeslaEvent ev)
@@ -157,15 +168,21 @@ namespace Rainbowrun
             {
                 ev.Player.AddHealth(-10);
             }
-            if(evento2 == 2) 
+        int p = (int)System.Environment.OSVersion.Platform;
+        if ((p == 4) || (p == 6) || (p == 128))
+        {
+            MEC.Timing.RunCoroutine(dañoo(ev.Player), MEC.Segment.FixedUpdate);
+
+        }
+        else { MEC.Timing.RunCoroutine(dañoo(ev.Player), 1); }
+
+            if ((p == 4) || (p == 6) || (p == 128))
             {
-                Timing.Run(dañoo(ev.Player));
+                MEC.Timing.RunCoroutine(Vidaa(ev.Player), MEC.Segment.FixedUpdate);
+
             }
-            if (evento2 == 3)
-            {
-                Timing.Run(vidaa(ev.Player));
-            }
-            if(evento2 == 4)
+            else { MEC.Timing.RunCoroutine(Vidaa(ev.Player), 1); }
+            if (evento2 == 4)
             {
                 ev.Player.GiveItem(ItemType.P90);
             }
