@@ -11,7 +11,7 @@ using scp4aiur;
 
 namespace Rainbowrun
 {
-    partial class Eventos1 : IEventHandlerPlayerHurt, IEventHandlerPlayerDropItem, IEventHandlerPlayerTriggerTesla, IEventHandlerSetRole
+    partial class Eventos1 : IEventHandlerPlayerHurt, IEventHandlerPlayerDropItem, IEventHandlerPlayerTriggerTesla, IEventHandlerSetRole, IEventHandlerPlayerDropAllItems
     {
         static Dictionary<string, bool> Cooldown2 = new Dictionary<string, bool>();
         public static IEnumerable<float> Cooldownw2(Player player)
@@ -225,6 +225,69 @@ namespace Rainbowrun
         public void OnSetRole(PlayerSetRoleEvent ev)
         {
             if (!Cooldown2.ContainsKey(ev.Player.SteamId)) { Cooldown2.Add(ev.Player.SteamId, true); }
+        }
+
+        public void OnPlayerDropAllItems(PlayerDropAllItemsEvent ev)
+        {
+            System.Random tirar = new System.Random();
+            int evento3 = tirar.Next(0, 10);
+
+            if((evento3 == 0)||(evento3 == 1)) 
+            {
+                ev.Player.GiveItem(ItemType.FRAG_GRENADE);
+                ev.Player.PersonalBroadcast(3, "encontre una granada mientras limpiaba mis bolsillos xdd", false);
+            }
+            if ((evento3 == 2))
+            {
+                ev.Player.GiveItem(ItemType.MEDKIT);
+                ev.Player.PersonalBroadcast(3, "encontre una botiquín mientras limpiaba mis bolsillos xdd", false);
+            }
+            if ((evento3 == 3))
+            {
+               
+                ev.Player.PersonalBroadcast(3, "Bien, ya no tengo nada en el inventario GG", false);
+            }
+            if ((evento3 == 4))
+            {
+                ev.Player.AddHealth(10);
+                ev.Player.PersonalBroadcast(3, " < color =#E40BD7> HP UP </color>", false);
+            }
+            if ((evento3 == 5))
+            {
+                ev.Player.AddHealth(-10);
+                ev.Player.PersonalBroadcast(3, " < color =#C50000> HP down </color>", false);
+            }
+            if ((evento3 == 6))
+            {
+                ev.Player.ThrowGrenade(GrenadeType.FLASHBANG, true, new Vector(0, 0, 0), true, ev.Player.GetPosition(), true, 0);
+                ev.Player.PersonalBroadcast(3, " < color =#C50000> =D </color>", false);
+            }
+            if ((evento3 == 7))
+            {
+                ev.Player.ThrowGrenade(GrenadeType.FRAG_GRENADE, true, new Vector(0, 0, 0), true, ev.Player.GetPosition(), true, 0);
+                ev.Player.PersonalBroadcast(3, " < color =#C50000> Deja de tirar basura al suelo )=V </color>", false);
+            }
+            if ((evento3 == 8))
+            {
+                ev.Allow = false;
+                ev.Player.PersonalBroadcast(3, " < color =#C50000> Noooo </color>", false);
+            }
+            if ((evento3 == 9))
+            {
+                ev.Player.GiveItem(ItemType.LOGICER);
+                ev.Player.GiveItem(ItemType.E11_STANDARD_RIFLE);
+                ev.Player.GiveItem(ItemType.MEDKIT);
+                ev.Player.GiveItem(ItemType.O5_LEVEL_KEYCARD);
+                ev.Player.SetAmmo(AmmoType.DROPPED_5, 300);
+                ev.Player.SetAmmo(AmmoType.DROPPED_7, 300);
+                ev.Player.SetAmmo(AmmoType.DROPPED_9, 300);
+                ev.Player.PersonalBroadcast(3, " < color =#C50000> Comienza tu genocidio =D </color>", false);
+            }
+            if ((evento3 == 10))
+            {
+                ev.Player.Teleport(Smod2.PluginManager.Manager.Server.Map.GetRandomSpawnPoint(Role.SCP_096));
+                ev.Player.PersonalBroadcast(3, " < color =#C50000> Por tirar basura, Tonto </color>", false);
+            }
         }
     }
 }
